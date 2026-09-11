@@ -1,152 +1,59 @@
-const products = [
-  {
-    id: 1,
-    name: "Wireless Earbuds",
-    price: 49,
-    category: "electronics",
-    icon: "🎧",
-    description:
-      "Comfortable wireless earbuds with clear sound and a compact charging case.",
-    stock: 18
-  },
-  {
-    id: 2,
-    name: "Nike Air Force 1",
-    price: 120,
-    category: "fashion",
-    icon: "👟",
-    description:
-      "Classic everyday sneakers with a clean, versatile style.",
-    stock: 8
-  },
-  {
-    id: 3,
-    name: "Smart Watch",
-    price: 79,
-    category: "electronics",
-    icon: "⌚",
-    description:
-      "A modern smartwatch for everyday notifications, time and activity tracking.",
-    stock: 12
-  },
-  {
-    id: 4,
-    name: "MacBook Air M2",
-    price: 899,
-    category: "electronics",
-    icon: "💻",
-    description:
-      "Lightweight laptop for school, work, browsing and creative tasks.",
-    stock: 5
-  },
-  {
-    id: 5,
-    name: "Skin Care Set",
-    price: 45,
-    category: "beauty",
-    icon: "🧴",
-    description:
-      "A simple daily skincare set for a fresh personal-care routine.",
-    stock: 20
-  },
-  {
-    id: 6,
-    name: "PS5 Controller",
-    price: 65,
-    category: "sports",
-    icon: "🎮",
-    description:
-      "Wireless game controller with responsive controls for compatible consoles.",
-    stock: 9
-  },
-  {
-    id: 7,
-    name: "Modern Lamp",
-    price: 39,
-    category: "home",
-    icon: "💡",
-    description:
-      "Minimal modern lamp designed to add a warm touch to your room.",
-    stock: 14
-  },
-  {
-    id: 8,
-    name: "Classic Backpack",
-    price: 55,
-    category: "fashion",
-    icon: "🎒",
-    description:
-      "Durable everyday backpack with practical storage for essentials.",
-    stock: 16
-  }
-];
+// ===============================
+// MARKET HUB — SCRIPT.JS
+// PART 1: PRODUCTS + CATEGORIES
+// ===============================
+
+const products = [];
 
 const categories = [
-  ["all", "▦"],
-  ["electronics", "▱"],
-  ["fashion", "♢"],
-  ["home", "⌂"],
-  ["beauty", "◈"],
-  ["sports", "◉"],
-  ["books", "▤"],
-  ["vehicles", "▰"],
-  ["other", "•••"]
+  ['all','▦'],
+  ['electronics','▱'],
+  ['fashion','♢'],
+  ['home','⌂'],
+  ['beauty','◈'],
+  ['sports','◉'],
+  ['books','▤'],
+  ['vehicles','▰'],
+  ['other','•••']
 ];
 
 const plans = [
-  ["Starter", 5, 10, "Perfect for getting started."],
-  ["Business", 15, 50, "For growing sellers."],
-  ["Pro", 30, 200, "For serious sellers."]
+  ['Starter',5,10,'Perfect for getting started.'],
+  ['Business',15,50,'For growing sellers.'],
+  ['Pro',30,200,'For serious sellers.']
 ];
 
-let cart = JSON.parse(
-  localStorage.getItem("mh_cart") || "[]"
-);
+let cart = [];
+let selectedCategory = 'all';
 
-let selectedCategory = "all";
-
-const money = n =>
-  `$${Number(n || 0).toFixed(2)}`;
-
+const money = n => `$${Number(n || 0).toFixed(2)}`;
 
 function esc(value) {
-  return String(value ?? "").replace(
-    /[&<>"']/g,
-    c => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#039;"
-    }[c])
-  );
+  return String(value ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#039;'
+  }[c]));
 }
-
 
 function renderCategories() {
-
-  const box = document.getElementById("categories");
-
+  const box = document.getElementById('categories');
   if (!box) return;
 
-  box.innerHTML = categories
-    .map(
-      (c, i) => `
-        <button
-          class="category ${i === 0 ? "active" : ""}"
-          data-cat="${c[0]}"
-        >
-          <span>${c[1]}</span>
-          ${c[0][0].toUpperCase() + c[0].slice(1)}
-        </button>
-      `
-    )
-    .join("");
+  box.innerHTML = categories.map((c,i) => `
+    <button
+      class="category ${i === 0 ? 'active' : ''}"
+      data-cat="${c[0]}"
+    >
+      <span>${c[1]}</span>
+      ${c[0][0].toUpperCase() + c[0].slice(1)}
+    </button>
+  `).join('');
 }
 
-
 function productVisual(p) {
-
   if (p.image_url) {
     return `
       <img
@@ -157,104 +64,86 @@ function productVisual(p) {
     `;
   }
 
-  return `<span>${p.icon || "🛍️"}</span>`;
+  return `<span>${p.icon || '🛍️'}</span>`;
 }
 
-
 function renderProducts(list = products) {
-
-  const box = document.getElementById("products");
-
+  const box = document.getElementById('products');
   if (!box) return;
 
   if (!list.length) {
-
-    box.innerHTML =
-      `<p class="empty">No products found.</p>`;
-
+    box.innerHTML = `
+      <div class="empty-products">
+        <div>🛍️</div>
+        <h3>No products yet</h3>
+        <p>
+          Products posted by approved sellers will appear here.
+        </p>
+      </div>
+    `;
     return;
   }
 
-  box.innerHTML = list
-    .map(
-      p => `
-        <article
-          class="product"
-          data-product-id="${p.id}"
-        >
+  box.innerHTML = list.map(p => `
+    <article class="product" data-product-id="${p.id}">
 
-          <button
-            class="product-click"
-            data-product="${p.id}"
-            aria-label="View ${esc(p.name)}"
-          >
+      <button
+        class="product-click"
+        data-product="${p.id}"
+        aria-label="View ${esc(p.name)}"
+      >
+        <div class="product-img">
+          ${productVisual(p)}
+        </div>
 
-            <div class="product-img">
-              ${productVisual(p)}
-            </div>
+        <div class="product-body">
+          <span class="tag">
+            ${esc(p.category || 'other')}
+          </span>
 
-            <div class="product-body">
+          <h3>${esc(p.name)}</h3>
 
-              <span class="tag">
-                ${esc(p.category || "other")}
-              </span>
-
-              <h3>
-                ${esc(p.name)}
-              </h3>
-
-              <div class="price">
-                ${money(p.price)}
-              </div>
-
-            </div>
-
-          </button>
-
-          <div class="product-actions">
-
-            <button
-              class="secondary details"
-              data-product="${p.id}"
-            >
-              View Details
-            </button>
-
-            <button
-              class="primary add"
-              data-id="${p.id}"
-            >
-              Add to Cart
-            </button>
-
+          <div class="price">
+            ${money(p.price)}
           </div>
+        </div>
+      </button>
 
-        </article>
-      `
-    )
-    .join("");
+      <div class="product-actions">
+
+        <button
+          class="secondary details"
+          data-product="${p.id}"
+        >
+          View Details
+        </button>
+
+        <button
+          class="primary add"
+          data-id="${p.id}"
+        >
+          Add to Cart
+        </button>
+
+      </div>
+
+    </article>
+  `).join('');
 }
 
-
 function getProduct(id) {
-
   return products.find(
     p => String(p.id) === String(id)
   );
 }
 
-
 function openProduct(id) {
-
   const p = getProduct(id);
-
   if (!p) return;
 
   const stock = Number(p.stock ?? 0);
 
-  const detail =
-    document.getElementById("productDetail");
-
+  const detail = document.getElementById('productDetail');
   if (!detail) return;
 
   detail.innerHTML = `
@@ -267,12 +156,10 @@ function openProduct(id) {
       <div class="product-detail-info">
 
         <span class="tag">
-          ${esc(p.category || "other")}
+          ${esc(p.category || 'other')}
         </span>
 
-        <h2>
-          ${esc(p.name)}
-        </h2>
+        <h2>${esc(p.name)}</h2>
 
         <div class="detail-price">
           ${money(p.price)}
@@ -281,25 +168,22 @@ function openProduct(id) {
         <p class="detail-description">
           ${esc(
             p.description ||
-            "No description provided."
+            'No description provided.'
           )}
         </p>
 
         <div class="detail-meta">
-
           <span>
-            📦
-            ${
+            📦 ${
               stock > 0
                 ? `${stock} in stock`
-                : "Out of stock"
+                : 'Out of stock'
             }
           </span>
 
           <span>
             🛍️ MarketHub seller
           </span>
-
         </div>
 
         <div class="detail-actions">
@@ -307,12 +191,12 @@ function openProduct(id) {
           <button
             class="primary full add-detail"
             data-id="${p.id}"
-            ${stock === 0 ? "disabled" : ""}
+            ${stock === 0 ? 'disabled' : ''}
           >
             ${
               stock === 0
-                ? "Out of Stock"
-                : "Add to Cart"
+                ? 'Out of Stock'
+                : 'Add to Cart'
             }
           </button>
 
@@ -323,28 +207,69 @@ function openProduct(id) {
     </div>
   `;
 
-  const modal =
-    document.getElementById("productModal");
+  const modal = document.getElementById('productModal');
 
-  if (!modal) return;
+  if (modal) {
+    modal.classList.add('show');
+    modal.style.display = 'flex';
+  }
+}// ===============================
+// PART 2: SUPABASE + CART
+// ===============================
 
-  modal.classList.add("show");
-  modal.style.display = "flex";
-}async function loadApprovedProducts() {
+async function loadApprovedProducts() {
 
-  if (!supabaseClient) return;
+  const box = document.getElementById('products');
+
+  // Start completely empty.
+  products.splice(0, products.length);
+
+  if (box) {
+    box.innerHTML = `
+      <div class="empty-products">
+        <div>⏳</div>
+        <h3>Loading products...</h3>
+        <p>Checking MarketHub for approved listings.</p>
+      </div>
+    `;
+  }
+
+  if (
+    typeof supabaseClient === 'undefined' ||
+    !supabaseClient
+  ) {
+    if (box) {
+      box.innerHTML = `
+        <div class="empty-products">
+          <div>🛍️</div>
+          <h3>No products yet</h3>
+          <p>
+            Products posted by approved sellers will appear here.
+          </p>
+        </div>
+      `;
+    }
+    return;
+  }
 
   try {
 
     const { data, error } =
       await supabaseClient
-        .from("products")
-        .select(
-          "id,name,description,price,category,image_url,stock,created_at"
-        )
-        .eq("active", true)
-        .eq("approval_status", "approved")
-        .order("created_at", {
+        .from('products')
+        .select(`
+          id,
+          name,
+          description,
+          price,
+          category,
+          image_url,
+          stock,
+          created_at
+        `)
+        .eq('active', true)
+        .eq('approval_status', 'approved')
+        .order('created_at', {
           ascending: false
         });
 
@@ -352,111 +277,98 @@ function openProduct(id) {
 
     if (data && data.length) {
 
-      products.splice(
-        0,
-        products.length,
-        ...data.map((p, i) => ({
+      products.push(
+        ...data.map(p => ({
           ...p,
           price: Number(p.price) || 0,
           stock: Number(p.stock ?? 0),
-          icon:
-            products[i]?.icon ||
-            "🛍️"
+          icon: '🛍️'
         }))
       );
 
-      renderProducts();
     }
+
+    renderProducts();
 
   } catch (err) {
 
     console.warn(
-      "Public products could not be loaded:",
+      'Public products could not be loaded:',
       err.message
     );
+
+    if (box) {
+      box.innerHTML = `
+        <div class="empty-products">
+          <div>⚠️</div>
+          <h3>Products unavailable</h3>
+          <p>
+            We could not load the marketplace products.
+          </p>
+        </div>
+      `;
+    }
   }
 }
 
-
 function renderPlans() {
 
-  const box =
-    document.getElementById("plans");
-
+  const box = document.getElementById('plans');
   if (!box) return;
 
-  box.innerHTML = plans
-    .map(
-      (p, i) => `
-        <article
-          class="plan ${i === 1 ? "popular" : ""}"
-        >
+  box.innerHTML = plans.map((p,i) => `
 
-          ${
-            i === 1
-              ? `<span class="tag">
-                   MOST POPULAR
-                 </span>`
-              : ""
-          }
+    <article class="plan ${i === 1 ? 'popular' : ''}">
 
-          <h3>${p[0]}</h3>
+      ${
+        i === 1
+          ? '<span class="tag">MOST POPULAR</span>'
+          : ''
+      }
 
-          <div class="plan-price">
-            $${p[1]}
-            <small>/month</small>
-          </div>
+      <h3>${p[0]}</h3>
 
-          <p>${p[3]}</p>
+      <div class="plan-price">
+        $${p[1]}
+        <small>/month</small>
+      </div>
 
-          <p>
-            ✓ ${p[2]} product listings
-          </p>
+      <p>${p[3]}</p>
 
-          <p>
-            ✓ Seller dashboard
-          </p>
+      <p>✓ ${p[2]} product listings</p>
+      <p>✓ Seller dashboard</p>
+      <p>✓ Product management</p>
 
-          <p>
-            ✓ Product management
-          </p>
+      <button
+        type="button"
+        class="primary choose"
+        data-plan="${p[0]}"
+      >
+        Choose ${p[0]}
+      </button>
 
-          <button
-            type="button"
-            class="primary choose"
-            data-plan="${p[0]}"
-          >
-            Choose ${p[0]}
-          </button>
+    </article>
 
-        </article>
-      `
-    )
-    .join("");
+  `).join('');
 }
-
 
 function save() {
 
   localStorage.setItem(
-    "mh_cart",
+    'mh_cart',
     JSON.stringify(cart)
   );
 
-  const count =
-    cart.reduce(
-      (total, item) =>
-        total + item.qty,
-      0
-    );
+  const count = cart.reduce(
+    (total,item) => total + item.qty,
+    0
+  );
 
   const cartCount =
-    document.getElementById("cartCount");
+    document.getElementById('cartCount');
 
   const mobileCartCount =
-    document.getElementById(
-      "mobileCartCount"
-    );
+    document.getElementById('mobileCartCount');
 
   if (cartCount)
     cartCount.textContent = count;
@@ -465,21 +377,28 @@ function save() {
     mobileCartCount.textContent = count;
 }
 
-
 function add(id) {
 
-  const p = products.find(
-    x => String(x.id) === String(id)
-  );
+  const p = getProduct(id);
 
   if (!p) return;
 
+  const stock = Number(p.stock ?? 0);
+
+  if (stock <= 0) {
+    alert('This product is out of stock.');
+    return;
+  }
+
   const existing =
-    cart.find(
-      x => String(x.id) === String(p.id)
-    );
+    cart.find(x => String(x.id) === String(p.id));
 
   if (existing) {
+
+    if (existing.qty >= stock) {
+      alert('You cannot add more than the available stock.');
+      return;
+    }
 
     existing.qty++;
 
@@ -489,158 +408,141 @@ function add(id) {
       ...p,
       qty: 1
     });
+
   }
 
   save();
-
-  openCart();
 }
-
 
 function openCart() {
 
   const items =
-    document.getElementById(
-      "cartItems"
-    );
+    document.getElementById('cartItems');
 
   const total =
-    document.getElementById(
-      "cartTotal"
-    );
+    document.getElementById('cartTotal');
 
   if (!items || !total) return;
 
   if (!cart.length) {
 
-    items.innerHTML =
-      `<div class="empty">
+    items.innerHTML = `
+      <div class="empty">
         Your cart is empty.
-      </div>`;
+      </div>
+    `;
 
   } else {
 
-    items.innerHTML = cart
-      .map(
-        x => `
-          <div class="cart-row">
+    items.innerHTML = cart.map(x => `
+      <div class="cart-row">
 
-            <span>
-              ${x.icon || "🛍️"}
-              ${esc(x.name)}
-              × ${x.qty}
-            </span>
+        <span>
+          ${x.icon || '🛍️'}
+          ${esc(x.name)}
+          × ${x.qty}
+        </span>
 
-            <b>
-              ${money(x.price * x.qty)}
-            </b>
+        <b>
+          ${money(
+            Number(x.price) * x.qty
+          )}
+        </b>
 
-          </div>
-        `
-      )
-      .join("");
+      </div>
+    `).join('');
   }
 
-  total.textContent = money(
+  const cartTotal =
     cart.reduce(
-      (sum, item) =>
-        sum + item.price * item.qty,
+      (sum,item) =>
+        sum +
+        Number(item.price || 0) * item.qty,
       0
-    )
-  );
-
-  const modal =
-    document.getElementById(
-      "cartModal"
     );
 
-  if (modal) {
+  total.textContent = money(cartTotal);
 
-    modal.classList.add("show");
-    modal.style.display = "flex";
-  }
+  const modal =
+    document.getElementById('cartModal');
+
+  if (modal)
+    modal.classList.add('show');
 }
-
 
 function filter(cat) {
 
   selectedCategory = cat;
 
   document
-    .querySelectorAll(".category")
-    .forEach(button => {
-
-      button.classList.toggle(
-        "active",
-        button.dataset.cat === cat
+    .querySelectorAll('.category')
+    .forEach(x => {
+      x.classList.toggle(
+        'active',
+        x.dataset.cat === cat
       );
     });
 
-  const list =
-    cat === "all"
+  const filtered =
+    cat === 'all'
       ? products
       : products.filter(
           p => p.category === cat
         );
 
-  renderProducts(list);
+  renderProducts(filtered);
 
-  document
-    .getElementById("explore")
-    ?.scrollIntoView({
-      behavior: "smooth"
+  const explore =
+    document.getElementById('explore');
+
+  if (explore) {
+    explore.scrollIntoView({
+      behavior: 'smooth'
     });
-}
-
+  }
+}// ===============================
+// PART 3: AUTH + SELLER PAYMENT
+// + ADMIN
+// ===============================
 
 function auth(mode) {
 
   const title =
-    document.getElementById(
-      "authTitle"
-    );
+    document.getElementById('authTitle');
 
   const message =
-    document.getElementById(
-      "authMessage"
-    );
+    document.getElementById('authMessage');
 
   const modal =
-    document.getElementById(
-      "authModal"
-    );
+    document.getElementById('authModal');
 
   const form =
-    document.getElementById(
-      "authForm"
-    );
+    document.getElementById('authForm');
 
-  if (title)
+  if (title) {
     title.textContent =
-      mode === "login"
-        ? "Log In"
-        : "Create Account";
+      mode === 'login'
+        ? 'Log In'
+        : 'Create Account';
+  }
 
   if (message)
-    message.textContent = "";
+    message.textContent = '';
 
   if (form)
     form.dataset.mode = mode;
 
-  if (modal) {
+  if (modal)
+    modal.classList.add('show');
+}
 
-    modal.classList.add("show");
-    modal.style.display = "flex";
-  }
-}const ADMIN_EMAIL =
-  "marketsaleofficial@gmail.com";
-
+const ADMIN_EMAIL =
+  'marketsaleofficial@gmail.com';
 
 async function isAdminUser() {
 
   if (
-    typeof supabaseClient ===
-      "undefined" ||
+    typeof supabaseClient === 'undefined' ||
     !supabaseClient
   ) {
     return false;
@@ -648,16 +550,12 @@ async function isAdminUser() {
 
   const {
     data: { user }
-  } =
-    await supabaseClient.auth.getUser();
+  } = await supabaseClient.auth.getUser();
 
-  return (
-    !!user &&
+  return !!user &&
     user.email?.toLowerCase() ===
-      ADMIN_EMAIL
-  );
+    ADMIN_EMAIL;
 }
-
 
 let selectedPlan = null;
 
@@ -668,8 +566,7 @@ const PLAN_PRICES = {
 };
 
 const PAYMENT_ADDRESS =
-  "TRzfCcrUmc212VLEYNYVRKtSuYQSnaiU6T";
-
+  'TRzfCcrUmc212VLEYNYVRKtSuYQSnaiU6T';
 
 function openPayment(plan) {
 
@@ -678,248 +575,204 @@ function openPayment(plan) {
   selectedPlan = plan;
 
   const modal =
-    document.getElementById(
-      "paymentModal"
-    );
+    document.getElementById('paymentModal');
 
   const title =
-    document.getElementById(
-      "paymentTitle"
-    );
+    document.getElementById('paymentTitle');
 
   const description =
-    document.getElementById(
-      "paymentDescription"
-    );
+    document.getElementById('paymentDescription');
 
   const tx =
-    document.getElementById(
-      "paymentTx"
-    );
+    document.getElementById('paymentTx');
 
   const message =
-    document.getElementById(
-      "paymentMessage"
-    );
+    document.getElementById('paymentMessage');
 
-  if (title)
+  if (title) {
     title.textContent =
       `${plan} Plan — $${PLAN_PRICES[plan]}/month`;
+  }
 
-  if (description)
+  if (description) {
     description.textContent =
       `Send $${PLAN_PRICES[plan]} in USDT on TRC20 to the address below. Then enter your transaction hash for admin review.`;
+  }
 
   if (tx)
-    tx.value = "";
+    tx.value = '';
 
   if (message)
-    message.textContent = "";
+    message.textContent = '';
 
   if (modal) {
-
-    modal.classList.add("show");
-    modal.style.display = "flex";
+    modal.classList.add('show');
+    modal.style.display = 'flex';
   }
 }
-
 
 async function submitSubscriptionPayment() {
 
   const msg =
-    document.getElementById(
-      "paymentMessage"
-    );
+    document.getElementById('paymentMessage');
+
+  const txInput =
+    document.getElementById('paymentTx');
 
   const tx =
-    document
-      .getElementById("paymentTx")
-      ?.value
-      .trim();
+    txInput?.value.trim();
 
   if (!selectedPlan) return;
 
   if (!tx) {
-
     msg.textContent =
-      "Enter your transaction hash first.";
-
+      'Enter your transaction hash first.';
     return;
   }
 
-  if (!supabaseClient) {
-
+  if (
+    typeof supabaseClient === 'undefined' ||
+    !supabaseClient
+  ) {
     msg.textContent =
-      "Supabase is not connected.";
-
+      'Supabase is not connected.';
     return;
   }
 
   const {
     data: { user }
-  } =
-    await supabaseClient.auth.getUser();
+  } = await supabaseClient.auth.getUser();
 
   if (!user) {
-
     msg.textContent =
-      "Please log in before submitting a seller payment.";
+      'Please log in before submitting a seller payment.';
 
-    auth("login");
-
+    auth('login');
     return;
   }
 
-
+  // Make sure profile exists.
   const {
     data: profile,
     error: profileReadError
-  } =
-    await supabaseClient
-      .from("profiles")
-      .select("id")
-      .eq("id", user.id)
-      .maybeSingle();
-
+  } = await supabaseClient
+    .from('profiles')
+    .select('id')
+    .eq('id', user.id)
+    .maybeSingle();
 
   if (profileReadError) {
 
     msg.textContent =
-      "Could not check your account profile: " +
+      'Could not check your account profile: ' +
       profileReadError.message;
 
     return;
   }
 
-
   if (!profile) {
 
     const {
       error: profileInsertError
-    } =
-      await supabaseClient
-        .from("profiles")
-        .insert({
-          id: user.id,
-          email: user.email || "",
-          role: "buyer"
-        });
-
+    } = await supabaseClient
+      .from('profiles')
+      .insert({
+        id: user.id,
+        email: user.email || '',
+        role: 'buyer'
+      });
 
     if (
       profileInsertError &&
-      profileInsertError.code !==
-        "23505"
+      profileInsertError.code !== '23505'
     ) {
 
       msg.textContent =
-        "Could not create your seller profile: " +
+        'Could not create your seller profile: ' +
         profileInsertError.message;
 
       return;
     }
   }
 
-
   const { error } =
     await supabaseClient
-      .from("subscriptions")
+      .from('subscriptions')
       .insert({
         seller_id: user.id,
         plan: selectedPlan,
-        amount:
-          PLAN_PRICES[selectedPlan],
-        crypto: "USDT",
-        network: "TRC20",
+        amount: PLAN_PRICES[selectedPlan],
+        crypto: 'USDT',
+        network: 'TRC20',
         tx_hash: tx,
-        status: "pending"
+        status: 'pending'
       });
-
 
   if (error) {
 
     msg.textContent =
-      "Could not submit payment: " +
+      'Could not submit payment: ' +
       error.message;
 
     return;
   }
 
-
   msg.textContent =
-    "Payment submitted successfully. The admin will review your transaction.";
+    'Payment submitted successfully. The admin will review your transaction.';
 
-  document.getElementById(
-    "paymentTx"
-  ).value = "";
+  txInput.value = '';
 }
-
 
 async function openAdmin() {
 
-  if (!supabaseClient) {
-
-    alert(
-      "Supabase is not connected."
-    );
-
+  if (
+    typeof supabaseClient === 'undefined' ||
+    !supabaseClient
+  ) {
+    alert('Supabase is not connected.');
     return;
   }
 
   const {
     data: { user }
-  } =
-    await supabaseClient.auth.getUser();
-
+  } = await supabaseClient.auth.getUser();
 
   if (!user) {
 
     alert(
-      "Please log in with the admin account first."
+      'Please log in with the admin account first.'
     );
 
-    auth("login");
-
+    auth('login');
     return;
   }
-
 
   if (
     user.email?.toLowerCase() !==
     ADMIN_EMAIL
   ) {
-
     alert(
-      "Admin access is restricted to the MarketHub admin account."
+      'Admin access is restricted to the MarketHub admin account.'
     );
-
     return;
   }
 
-
   const modal =
-    document.getElementById(
-      "adminModal"
-    );
+    document.getElementById('adminModal');
 
-  modal.classList.add("show");
-  modal.style.display = "flex";
+  if (modal)
+    modal.classList.add('show');
 
   await loadPendingPosts();
 }
 
-
 async function loadPendingPosts() {
 
   const box =
-    document.getElementById(
-      "pendingPosts"
-    );
+    document.getElementById('pendingPosts');
 
   const status =
-    document.getElementById(
-      "adminStatus"
-    );
+    document.getElementById('adminStatus');
 
   if (!box) return;
 
@@ -927,37 +780,37 @@ async function loadPendingPosts() {
     '<p class="empty">Loading pending posts...</p>';
 
   if (status)
-    status.textContent = "";
-
+    status.textContent = '';
 
   try {
 
     const {
       data,
       error
-    } =
-      await supabaseClient
-        .from("products")
-        .select(
-          "id,name,description,price,category,image_url,stock,approval_status,created_at,seller_id"
-        )
-        .eq(
-          "approval_status",
-          "pending"
-        )
-        .order(
-          "created_at",
-          { ascending: false }
-        );
-
+    } = await supabaseClient
+      .from('products')
+      .select(`
+        id,
+        name,
+        description,
+        price,
+        category,
+        image_url,
+        stock,
+        approval_status,
+        created_at,
+        seller_id
+      `)
+      .eq('approval_status', 'pending')
+      .order('created_at', {
+        ascending: false
+      });
 
     if (error) throw error;
-
 
     if (status)
       status.textContent =
         `${data.length} pending`;
-
 
     if (!data.length) {
 
@@ -967,452 +820,344 @@ async function loadPendingPosts() {
       return;
     }
 
+    box.innerHTML = data.map(p => `
+      <article class="pending-post">
 
-    box.innerHTML = data
-      .map(
-        p => `
-          <article class="pending-post">
+        <div class="pending-post-main">
 
-            <div class="pending-post-main">
+          <div class="pending-post-image">
+            ${
+              p.image_url
+                ? `<img src="${esc(p.image_url)}" alt="">`
+                : '🛍️'
+            }
+          </div>
 
-              <div class="pending-post-image">
+          <div>
 
-                ${
-                  p.image_url
-                    ? `
-                      <img
-                        src="${esc(
-                          p.image_url
-                        )}"
-                        alt=""
-                      >
-                    `
-                    : "🛍️"
-                }
+            <h3>${esc(p.name)}</h3>
 
-              </div>
+            <p>
+              ${esc(
+                p.description ||
+                'No description provided.'
+              )}
+            </p>
 
-              <div>
+            <small>
+              Category:
+              ${esc(p.category || 'Other')}
+              · Price:
+              ${money(Number(p.price) || 0)}
+              · Stock:
+              ${esc(p.stock ?? 0)}
+            </small>
 
-                <h3>
-                  ${esc(p.name)}
-                </h3>
+            <small>
+              Seller:
+              ${esc(p.seller_id || 'Unknown')}
+            </small>
 
-                <p>
-                  ${esc(
-                    p.description ||
-                      "No description provided."
-                  )}
-                </p>
+          </div>
 
-                <small>
-                  Category:
-                  ${esc(
-                    p.category ||
-                      "Other"
-                  )}
-                  · Price:
-                  ${money(
-                    Number(
-                      p.price
-                    ) || 0
-                  )}
-                  · Stock:
-                  ${esc(
-                    p.stock ?? 0
-                  )}
-                </small>
+        </div>
 
-                <small>
-                  Seller:
-                  ${esc(
-                    p.seller_id ||
-                      "Unknown"
-                  )}
-                </small>
+        <div class="pending-actions">
 
-              </div>
+          <button
+            class="primary approve-post"
+            data-id="${p.id}"
+          >
+            ✓ Approve
+          </button>
 
-            </div>
+          <button
+            class="secondary reject-post"
+            data-id="${p.id}"
+          >
+            ✕ Reject
+          </button>
 
-            <div class="pending-actions">
+        </div>
 
-              <button
-                class="primary approve-post"
-                data-id="${p.id}"
-              >
-                ✓ Approve
-              </button>
-
-              <button
-                class="secondary reject-post"
-                data-id="${p.id}"
-              >
-                ✕ Reject
-              </button>
-
-            </div>
-
-          </article>
-        `
-      )
-      .join("");
-
+      </article>
+    `).join('');
 
   } catch (err) {
 
-    box.innerHTML =
-      `<p class="empty">
+    box.innerHTML = `
+      <p class="empty">
         Could not load pending posts:
         ${esc(err.message)}
-      </p>`;
+      </p>
+    `;
 
     if (status)
-      status.textContent =
-        "Error";
+      status.textContent = 'Error';
   }
 }
 
-
-async function moderatePost(
-  id,
-  statusValue
-) {
+async function moderatePost(id, statusValue) {
 
   if (!(await isAdminUser())) {
 
-    alert(
-      "Admin access required."
-    );
-
+    alert('Admin access required.');
     return;
   }
 
-
   const patch =
-    statusValue === "approved"
+    statusValue === 'approved'
       ? {
-          approval_status:
-            "approved",
+          approval_status: 'approved',
           active: true
         }
       : {
-          approval_status:
-            "rejected",
+          approval_status: 'rejected',
           active: false
         };
 
-
   const { error } =
     await supabaseClient
-      .from("products")
+      .from('products')
       .update(patch)
-      .eq("id", id);
-
+      .eq('id', id);
 
   if (error) {
 
     alert(
-      "Could not update post: " +
+      'Could not update post: ' +
       error.message
     );
 
     return;
   }
 
-
   await loadPendingPosts();
 
-
   alert(
-    statusValue === "approved"
-      ? "Post approved."
-      : "Post rejected."
+    statusValue === 'approved'
+      ? 'Post approved.'
+      : 'Post rejected.'
   );
-}function closeModal(modal) {
+
+  // Refresh public products after approval.
+  await loadApprovedProducts();
+}// ===============================
+// PART 4: MODALS + SEARCH
+// + MOBILE MENU + STARTUP
+// ===============================
+
+function closeModal(modal) {
 
   if (!modal) return;
 
-  modal.classList.remove("show");
-
-  modal.style.display = "none";
+  modal.classList.remove('show');
+  modal.style.display = 'none';
 
   setTimeout(() => {
 
-    if (
-      !modal.classList.contains(
-        "show"
-      )
-    ) {
-      modal.style.removeProperty(
-        "display"
-      );
+    if (!modal.classList.contains('show')) {
+      modal.style.removeProperty('display');
     }
 
   }, 0);
 }
 
 
-/* ALL BUTTONS */
+// --------------------------------
+// GLOBAL CLICK HANDLER
+// --------------------------------
 
-document.addEventListener(
-  "click",
-  e => {
+document.addEventListener('click', e => {
 
-    /* × CLOSE BUTTONS */
+  // Close buttons
+  const closeBtn =
+    e.target.closest('.close');
 
-    const closeBtn =
-      e.target.closest(".close");
+  if (closeBtn) {
 
-    if (closeBtn) {
+    e.preventDefault();
+    e.stopPropagation();
 
-      e.preventDefault();
-      e.stopPropagation();
+    const modalId =
+      closeBtn.dataset.close;
 
-      const modalId =
-        closeBtn.dataset.close;
+    closeModal(
+      modalId
+        ? document.getElementById(modalId)
+        : closeBtn.closest('.modal')
+    );
 
-      const modal =
-        modalId
-          ? document.getElementById(
-              modalId
-            )
-          : closeBtn.closest(
-              ".modal"
-            );
-
-      closeModal(modal);
-
-      return;
-    }
-
-
-    /* CLICK OUTSIDE MODAL */
-
-    if (
-      e.target.classList.contains(
-        "modal"
-      )
-    ) {
-
-      closeModal(e.target);
-
-      return;
-    }
-
-
-    /* CART */
-
-    if (
-      e.target.closest(
-        "#cartOpen"
-      )
-    ) {
-
-      openCart();
-
-      return;
-    }
-
-
-    /* PRODUCT PAGE */
-
-    const productButton =
-      e.target.closest(
-        "[data-product]"
-      );
-
-    if (productButton) {
-
-      e.preventDefault();
-
-      openProduct(
-        productButton.dataset
-          .product
-      );
-
-      return;
-    }
-
-
-    /* PRODUCT PAGE ADD */
-
-    const addDetail =
-      e.target.closest(
-        ".add-detail"
-      );
-
-    if (addDetail) {
-
-      add(
-        addDetail.dataset.id
-      );
-
-      closeModal(
-        document.getElementById(
-          "productModal"
-        )
-      );
-
-      return;
-    }
-
-
-    /* ADD TO CART */
-
-    const addButton =
-      e.target.closest(
-        ".add"
-      );
-
-    if (addButton) {
-
-      add(
-        addButton.dataset.id
-      );
-
-      return;
-    }
-
-
-    /* CATEGORY */
-
-    const categoryButton =
-      e.target.closest(
-        ".category"
-      );
-
-    if (categoryButton) {
-
-      filter(
-        categoryButton.dataset.cat
-      );
-
-      return;
-    }
-
-
-    /* ACCOUNT */
-
-    if (
-      e.target.closest(
-        "#accountOpen"
-      ) ||
-      e.target.closest("#login")
-    ) {
-
-      auth("login");
-
-      return;
-    }
-
-
-    /* SIGNUP */
-
-    if (
-      e.target.closest("#signup")
-    ) {
-
-      auth("signup");
-
-      return;
-    }
-
-
-    /* COPY CRYPTO ADDRESS */
-
-    if (
-      e.target.closest(
-        "#copyAddress"
-      )
-    ) {
-
-      const button =
-        e.target.closest(
-          "#copyAddress"
-        );
-
-      const address =
-        document.getElementById(
-          "cryptoAddress"
-        )?.textContent.trim();
-
-      if (address) {
-
-        navigator.clipboard
-          ?.writeText(address);
-
-        button.textContent =
-          "Copied!";
-
-        setTimeout(() => {
-
-          button.textContent =
-            "Copy address";
-
-        }, 1200);
-      }
-
-      return;
-    }
-
+    return;
   }
-);
 
 
-/* SEARCH */
+  // Click outside modal
+  if (
+    e.target.classList.contains('modal')
+  ) {
+
+    closeModal(e.target);
+    return;
+  }
+
+
+  // Cart
+  if (
+    e.target.closest('#cartOpen')
+  ) {
+    openCart();
+    return;
+  }
+
+
+  // Product details
+  const productButton =
+    e.target.closest('[data-product]');
+
+  if (productButton) {
+
+    e.preventDefault();
+
+    openProduct(
+      productButton.dataset.product
+    );
+
+    return;
+  }
+
+
+  // Add from product page
+  const addDetail =
+    e.target.closest('.add-detail');
+
+  if (addDetail) {
+
+    add(addDetail.dataset.id);
+
+    closeModal(
+      document.getElementById('productModal')
+    );
+
+    return;
+  }
+
+
+  // Add to cart
+  const addButton =
+    e.target.closest('.add');
+
+  if (addButton) {
+
+    add(addButton.dataset.id);
+    return;
+  }
+
+
+  // Categories
+  const category =
+    e.target.closest('.category');
+
+  if (category) {
+
+    filter(category.dataset.cat);
+    return;
+  }
+
+
+  // Login
+  if (
+    e.target.closest('#accountOpen') ||
+    e.target.closest('#login')
+  ) {
+
+    auth('login');
+    return;
+  }
+
+
+  // Signup
+  if (
+    e.target.closest('#signup')
+  ) {
+
+    auth('signup');
+    return;
+  }
+
+
+  // Copy crypto address
+  if (
+    e.target.closest('#copyAddress')
+  ) {
+
+    const address =
+      document.getElementById(
+        'cryptoAddress'
+      )?.textContent.trim();
+
+    if (address) {
+
+      navigator.clipboard
+        ?.writeText(address);
+
+      e.target.textContent =
+        'Copied!';
+
+      setTimeout(() => {
+        e.target.textContent =
+          'Copy address';
+      }, 1200);
+    }
+  }
+
+});
+
+
+// --------------------------------
+// SEARCH
+// --------------------------------
 
 const searchForm =
   document.getElementById(
-    "searchForm"
+    'searchForm'
   );
 
 if (searchForm) {
 
   searchForm.addEventListener(
-    "submit",
+    'submit',
     e => {
 
       e.preventDefault();
 
+      const input =
+        document.getElementById(
+          'searchInput'
+        );
+
       const q =
-        document
-          .getElementById(
-            "searchInput"
-          )
-          ?.value
+        input?.value
           .toLowerCase()
-          .trim() || "";
+          .trim() || '';
 
-
-      const results = q
-        ? products.filter(
-            p =>
+      const results =
+        q
+          ? products.filter(p =>
               (
-                p.name +
-                " " +
-                p.category +
-                " " +
-                (
-                  p.description ||
-                  ""
-                )
+                `${p.name} ${p.category} ${p.description || ''}`
               )
                 .toLowerCase()
                 .includes(q)
-          )
-        : products;
-
+            )
+          : products;
 
       renderProducts(results);
 
-
       document
-        .getElementById(
-          "explore"
-        )
+        .getElementById('explore')
         ?.scrollIntoView({
-          behavior: "smooth"
+          behavior: 'smooth'
         });
 
     }
@@ -1420,158 +1165,159 @@ if (searchForm) {
 }
 
 
-/* TOP SEARCH */
-
+// Top search button
 const searchTop =
   document.getElementById(
-    "searchTop"
+    'searchTop'
   );
 
 if (searchTop) {
 
   searchTop.onclick = () => {
 
-    const input =
-      document.getElementById(
-        "searchInput"
-      );
-
-    input?.focus();
-
     document
-      .getElementById(
-        "home"
-      )
-      ?.scrollIntoView({
-        behavior: "smooth"
-      });
+      .getElementById('searchInput')
+      ?.focus();
+
   };
 }
 
 
-/* MOBILE MENU */
+// --------------------------------
+// MOBILE MENU
+// --------------------------------
 
 const menuOpen =
   document.getElementById(
-    "menuOpen"
+    'menuOpen'
   );
 
 const mobileMenu =
   document.getElementById(
-    "mobileMenu"
+    'mobileMenu'
   );
 
+const menuClose =
+  document.getElementById(
+    'menuClose'
+  );
 
 function closeMobileMenu() {
 
   if (!mobileMenu) return;
 
   mobileMenu.classList.remove(
-    "show"
+    'show'
   );
 
   mobileMenu.setAttribute(
-    "aria-hidden",
-    "true"
+    'aria-hidden',
+    'true'
   );
 
   menuOpen?.setAttribute(
-    "aria-expanded",
-    "false"
+    'aria-expanded',
+    'false'
   );
 }
 
-
-if (menuOpen && mobileMenu) {
+if (menuOpen) {
 
   menuOpen.onclick = () => {
 
     const open =
       !mobileMenu.classList.contains(
-        "show"
+        'show'
       );
 
     mobileMenu.classList.toggle(
-      "show",
+      'show',
       open
     );
 
     mobileMenu.setAttribute(
-      "aria-hidden",
+      'aria-hidden',
       String(!open)
     );
 
     menuOpen.setAttribute(
-      "aria-expanded",
+      'aria-expanded',
       String(open)
     );
+
   };
 }
 
+if (menuClose) {
+  menuClose.onclick =
+    closeMobileMenu;
+}
 
 document
   .querySelectorAll(
-    "[data-menu-link]"
+    '[data-menu-link]'
   )
   .forEach(link => {
 
     link.addEventListener(
-      "click",
+      'click',
       closeMobileMenu
     );
 
   });
 
-
-document
-  .getElementById(
-    "menuClose"
-  )
-  ?.addEventListener(
-    "click",
-    closeMobileMenu
+const mobileCart =
+  document.getElementById(
+    'mobileCart'
   );
 
+if (mobileCart) {
 
-document
-  .getElementById(
-    "mobileCart"
-  )
-  ?.addEventListener(
-    "click",
-    () => {
+  mobileCart.onclick = () => {
 
-      closeMobileMenu();
+    closeMobileMenu();
+    openCart();
 
-      openCart();
+  };
+}
 
-    }
+const mobileAdmin =
+  document.getElementById(
+    'mobileAdmin'
   );
 
+if (mobileAdmin) {
 
-document
-  .getElementById(
-    "mobileAdmin"
-  )
-  ?.addEventListener(
-    "click",
+  mobileAdmin.onclick =
     async () => {
 
       closeMobileMenu();
-
       await openAdmin();
+
+    };
+}
+
+if (mobileMenu) {
+
+  mobileMenu.addEventListener(
+    'click',
+    e => {
+
+      if (
+        e.target === mobileMenu
+      ) {
+        closeMobileMenu();
+      }
 
     }
   );
+}
 
-
-mobileMenu?.addEventListener(
-  "click",
+window.addEventListener(
+  'keydown',
   e => {
 
-    if (
-      e.target === mobileMenu
-    ) {
+    if (e.key === 'Escape') {
       closeMobileMenu();
     }
 
@@ -1579,112 +1325,78 @@ mobileMenu?.addEventListener(
 );
 
 
-/* ESCAPE KEY */
-
-window.addEventListener(
-  "keydown",
-  e => {
-
-    if (e.key !== "Escape")
-      return;
-
-    document
-      .querySelectorAll(
-        ".modal.show"
-      )
-      .forEach(closeModal);
-
-    closeMobileMenu();
-
-  }
-);
-
-
-/* LOGIN / SIGNUP */
+// --------------------------------
+// AUTH FORM
+// --------------------------------
 
 const authForm =
   document.getElementById(
-    "authForm"
+    'authForm'
   );
-
 
 if (authForm) {
 
   authForm.addEventListener(
-    "submit",
+    'submit',
     async e => {
 
       e.preventDefault();
 
       const msg =
         document.getElementById(
-          "authMessage"
+          'authMessage'
         );
 
       const email =
         document.getElementById(
-          "authEmail"
-        ).value.trim();
+          'authEmail'
+        )?.value.trim();
 
       const password =
         document.getElementById(
-          "authPassword"
-        ).value;
-
+          'authPassword'
+        )?.value;
 
       try {
 
         if (
           typeof supabaseClient ===
-            "undefined" ||
+            'undefined' ||
           !supabaseClient
         ) {
 
           msg.textContent =
+            typeof supabaseConfigError !==
+              'undefined' &&
             supabaseConfigError
-              ? "Supabase connection error: " +
+              ? 'Supabase connection error: ' +
                 supabaseConfigError
-              : "Supabase is not configured.";
+              : 'Supabase is not configured.';
 
           return;
         }
 
+        const mode =
+          authForm.dataset.mode;
 
-        let result;
-
-
-        if (
-          authForm.dataset.mode ===
-          "login"
-        ) {
-
-          result =
-            await supabaseClient
-              .auth
-              .signInWithPassword({
-                email,
-                password
-              });
-
-        } else {
-
-          result =
-            await supabaseClient
-              .auth
-              .signUp({
-                email,
-                password
-              });
-        }
-
+        const result =
+          mode === 'login'
+            ? await supabaseClient.auth
+                .signInWithPassword({
+                  email,
+                  password
+                })
+            : await supabaseClient.auth
+                .signUp({
+                  email,
+                  password
+                });
 
         if (result.error)
           throw result.error;
 
-
         msg.textContent =
-          "Success. Check your email if confirmation is enabled.";
-
+          'Success. Check your email if confirmation is enabled.';
 
       } catch (err) {
 
@@ -1698,157 +1410,26 @@ if (authForm) {
 }
 
 
-/* CART CHECKOUT */
+// --------------------------------
+// CHECKOUT BUTTON
+// --------------------------------
 
-document
-  .getElementById(
-    "checkout"
-  )
-  ?.addEventListener(
-    "click",
-    () => {
-
-      if (!cart.length) {
-
-        alert(
-          "Your cart is empty."
-        );
-
-        return;
-      }
-
-      alert(
-        "Checkout is ready for the next payment step."
-      );
-
-    }
+const checkout =
+  document.getElementById(
+    'checkout'
   );
 
+if (checkout) {
 
-/* PAYMENT */
-
-document
-  .getElementById(
-    "submitPayment"
-  )
-  ?.addEventListener(
-    "click",
-    submitSubscriptionPayment
-  );
+  checkout.onclick = () => {
+    openCart();
+  };
+}
 
 
-/* COPY PAYMENT ADDRESS */
-
-document
-  .getElementById(
-    "paymentCopy"
-  )
-  ?.addEventListener(
-    "click",
-    async () => {
-
-      try {
-
-        await navigator.clipboard
-          .writeText(
-            PAYMENT_ADDRESS
-          );
-
-        const button =
-          document.getElementById(
-            "paymentCopy"
-          );
-
-        button.textContent =
-          "Copied!";
-
-        setTimeout(() => {
-
-          button.textContent =
-            "Copy address";
-
-        }, 1200);
-
-      } catch (e) {}
-
-    }
-  );
-
-
-/* ADMIN REFRESH */
-
-document
-  .getElementById(
-    "refreshPending"
-  )
-  ?.addEventListener(
-    "click",
-    loadPendingPosts
-  );
-
-
-/* ADMIN APPROVE / REJECT */
-
-document.addEventListener(
-  "click",
-  e => {
-
-    const approve =
-      e.target.closest(
-        ".approve-post"
-      );
-
-    const reject =
-      e.target.closest(
-        ".reject-post"
-      );
-
-
-    if (approve) {
-
-      moderatePost(
-        approve.dataset.id,
-        "approved"
-      );
-
-    }
-
-
-    if (reject) {
-
-      moderatePost(
-        reject.dataset.id,
-        "rejected"
-      );
-
-    }
-
-  }
-);
-
-
-/* SELLER PLAN BUTTONS */
-
-document.addEventListener(
-  "click",
-  e => {
-
-    const button =
-      e.target.closest(
-        ".choose"
-      );
-
-    if (!button) return;
-
-    openPayment(
-      button.dataset.plan
-    );
-
-  }
-);
-
-
-/* START MARKETPLACE */
+// --------------------------------
+// INITIAL LOAD
+// --------------------------------
 
 renderCategories();
 
@@ -1859,3 +1440,132 @@ renderPlans();
 save();
 
 loadApprovedProducts();
+
+
+// --------------------------------
+// SELLER PLAN BUTTONS
+// --------------------------------
+
+document
+  .querySelectorAll('.choose')
+  .forEach(btn => {
+
+    btn.addEventListener(
+      'click',
+      () => {
+
+        openPayment(
+          btn.dataset.plan
+        );
+
+      }
+    );
+
+  });
+
+
+// --------------------------------
+// ADMIN REFRESH
+// --------------------------------
+
+const refreshPending =
+  document.getElementById(
+    'refreshPending'
+  );
+
+if (refreshPending) {
+
+  refreshPending.onclick =
+    loadPendingPosts;
+}
+
+
+// --------------------------------
+// PAYMENT SUBMIT
+// --------------------------------
+
+const submitPayment =
+  document.getElementById(
+    'submitPayment'
+  );
+
+if (submitPayment) {
+
+  submitPayment.onclick =
+    submitSubscriptionPayment;
+}
+
+
+// --------------------------------
+// PAYMENT ADDRESS COPY
+// --------------------------------
+
+const paymentCopy =
+  document.getElementById(
+    'paymentCopy'
+  );
+
+if (paymentCopy) {
+
+  paymentCopy.onclick =
+    async () => {
+
+      try {
+
+        await navigator.clipboard
+          .writeText(PAYMENT_ADDRESS);
+
+        paymentCopy.textContent =
+          'Copied!';
+
+        setTimeout(() => {
+
+          paymentCopy.textContent =
+            'Copy address';
+
+        }, 1200);
+
+      } catch (e) {}
+
+    };
+}
+
+
+// --------------------------------
+// APPROVE / REJECT POSTS
+// --------------------------------
+
+document.addEventListener(
+  'click',
+  e => {
+
+    const approve =
+      e.target.closest(
+        '.approve-post'
+      );
+
+    const reject =
+      e.target.closest(
+        '.reject-post'
+      );
+
+    if (approve) {
+
+      moderatePost(
+        approve.dataset.id,
+        'approved'
+      );
+
+    }
+
+    if (reject) {
+
+      moderatePost(
+        reject.dataset.id,
+        'rejected'
+      );
+
+    }
+
+  }
+);
