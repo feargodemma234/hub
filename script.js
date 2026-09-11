@@ -1568,4 +1568,346 @@ document.addEventListener(
     }
 
   }
-);
+)// ===============================
+// ACCOUNT STATE
+// ===============================
+
+async function getCurrentUser() {
+
+  if (
+    typeof supabaseClient === 'undefined' ||
+    !supabaseClient
+  ) {
+    return null;
+  }
+
+  const {
+    data: { user }
+  } = await supabaseClient.auth.getUser();
+
+  return user || null;
+}
+
+
+async function ensureProfile(user) {
+
+  if (!user || !supabaseClient) return;
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from('profiles')
+    .select('id')
+    .eq('id', user.id)
+    .maybeSingle();
+
+  if (error) {
+    console.warn(
+      'Profile check failed:',
+      error.message
+    );
+    return;
+  }
+
+  if (!data) {
+
+    const { error: insertError } =
+      await supabaseClient
+        .from('profiles')
+        .insert({
+          id: user.id,
+          email: user.email || '',
+          role: 'buyer'
+        });
+
+    if (
+      insertError &&
+      insertError.code !== '23505'
+    ) {
+      console.warn(
+        'Profile creation failed:',
+        insertError.message
+      );
+    }
+  }
+}
+
+
+// ===============================
+// UPDATE ACCOUNT UI
+// ===============================
+
+async function updateAccountUI() {
+
+  currentUser =
+    await getCurrentUser();
+
+  const label =
+    document.getElementById(
+      'accountLabel'
+    );
+
+  const email =
+    document.getElementById(
+      'accountEmail'
+    );
+
+  const status =
+    document.getElementById(
+      'accountStatus'
+    );
+
+  const login =
+    document.getElementById(
+      'accountLogin'
+    );
+
+  const signup =
+    document.getElementById(
+      'accountSignup'
+    );
+
+  const logout =
+    document.getElementById(
+      'accountLogout'
+    );
+
+  const store =
+    document.getElementById(
+      'accountStore'
+    );
+
+  if (!currentUser) {
+
+    if (label)
+      label.textContent = 'Account';
+
+    if (email)
+      email.textContent = 'Not logged in';
+
+    if (status)
+      status.textContent =
+        'Log in to manage your account';
+
+    if (login)
+      login.style.display = 'flex';
+
+    if (signup)
+      signup.style.display = 'flex';
+
+    if (logout)
+      logout.style.display = 'none';
+
+    if (store)
+      store.style.display = 'none';
+
+    return;
+  }
+
+
+  await ensureProfile(currentUser);
+
+  if (label)
+    label.textContent = 'Account';
+
+  if (email)
+    email.textContent =
+      currentUser.email || 'Account';
+
+  if (status)
+    status.textContent =
+      'MarketHub account';
+
+  if (login)
+    login.style.display = 'none';
+
+  if (signup)
+    signup.style.display = 'none';
+
+  if (logout)
+    logout.style.display = 'flex';
+
+  if (store)
+    store.style.display = 'flex';
+
+  await updateStorePreview();
+}
+
+
+// ===============================
+// STORE PRODUCT COUNTS
+// ===============================
+
+async function getStoreStats() {
+
+  if (!currentUser || !supabaseClient) {
+
+    return {
+      total: 0,
+      approved: 0,
+      pending: 0
+    };
+
+  }
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from('products')
+    .select(
+      'id, approval_status',
+      { count: 'exact' }
+    )
+    .eq(
+      'seller_id',
+      currentUser.id
+    );
+
+  if (error) {
+
+    console.warn(
+      'Could not load store:',
+      error.message
+    );
+
+    return {
+      total: 0,
+      approved: 0,
+      pending: 0,
+      error: error.message
+    };
+  }
+
+  const rows = data || [];
+
+  return {
+    total: rows.length,
+
+    approved:
+      rows.filter(
+        p =>
+          p.approval_status ===
+          'approved'
+      ).length,
+
+    pending:
+      rows.filter(
+        p =>
+          p.approval_status ===
+          'pending'
+      ).length
+  };
+}
+
+
+async function updateStorePreview() {
+
+  const preview =
+    document.getElementById(
+      'storeProductPreview'
+    );
+
+  if (!preview || !currentUser)
+    return;
+
+  const stats =
+    await getStoreStats();
+
+  preview.textContent =
+    `${stats.total} product${
+      stats.total === 1 ? '' : 's'
+    } posted`;
+}
+
+
+// ===============================
+// OPEN MY STORE
+// ===============================
+
+async function openMyStore() {
+
+  if (!currentUser) {
+
+    closeAccountDropdown();
+    auth('login');
+
+    return;
+  }
+
+  const modal =
+    document.getElementById(
+      'storeModal'
+    );
+
+  const email =
+    document.getElementById(
+      'storeEmail'
+    );
+
+  const total =
+    document.getElementById(
+      'storeProductCount'
+    );
+
+  const approved =
+    document.getElementById(
+      'storeApprovedCount'
+    );
+
+  const pending =
+    document.getElementById(
+      'storePendingCount'
+    );
+
+  const message =
+    document.getElementById(
+      'storeMessage'
+    );
+
+  if (email) {
+    email.textContent =
+      currentUser.email || '';
+  }
+
+  if (message) {
+    message.textContent =
+      'Loading your store...';
+  }
+
+  if (modal) {
+    modal.classList.add('show');
+    modal.style.display = 'flex';
+  }
+
+  const stats =
+    await getStoreStats();
+
+  if (total)
+    total.textContent =
+      stats.total;
+
+  if (approved)
+    approved.textContent =
+      stats.approved;
+
+  if (pending)
+    pending.textContent =
+      stats.pending;
+
+  if (message) {
+
+    if (stats.error) {
+
+      message.textContent =
+        'Could not load your store: ' +
+        stats.error;
+
+    } else {
+
+      message.textContent =
+        'Your product statistics are up to date.';
+    }
+  }
+};
