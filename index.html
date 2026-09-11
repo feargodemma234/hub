@@ -3,16 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="MarketHub — Buy, sell and grow your business.">
+
   <title>MarketHub — Buy. Sell. Grow.</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="MarketHub — Buy, sell and grow your business online.">
+
+  <link rel="stylesheet" href="style.css?v=20260911-1800">
 </head>
 
 <body>
 
+<!-- =========================
+     HEADER
+========================= -->
+
 <header class="topbar">
+
   <a href="#home" class="brand">
-    <span class="bag">🛍</span> Market<span>Hub</span>
+    <span class="bag">🛍</span>
+    Market<span>Hub</span>
   </a>
 
   <nav class="nav">
@@ -23,29 +31,151 @@
   </nav>
 
   <div class="top-actions">
-    <button class="icon-btn" id="searchTop">⌕</button>
 
-    <button class="icon-btn cart-button" id="cartOpen">
-      🛒<b id="cartCount">0</b>
+    <button
+      class="icon-btn"
+      id="searchTop"
+      aria-label="Search"
+      type="button">
+      ⌕
     </button>
 
-    <button class="account-btn" id="accountOpen">
-      👤 <span>Account</span>⌄
+    <button
+      class="icon-btn cart-button"
+      id="cartOpen"
+      aria-label="Cart"
+      type="button">
+      🛒
+      <b id="cartCount">0</b>
     </button>
 
-    <button class="menu-btn" id="menuOpen">☰</button>
+    <!-- ACCOUNT -->
+    <div class="account-wrap">
+
+      <button
+        class="account-btn"
+        id="accountOpen"
+        type="button"
+        aria-expanded="false">
+        👤
+        <span id="accountButtonText">Account</span>
+        <span class="account-arrow">⌄</span>
+      </button>
+
+      <div
+        class="account-dropdown"
+        id="accountDropdown"
+        aria-hidden="true">
+
+        <div class="account-dropdown-head">
+
+          <div class="account-avatar">
+            👤
+          </div>
+
+          <div class="account-user-info">
+
+            <strong id="accountUserName">
+              Guest
+            </strong>
+
+            <small id="accountUserEmail">
+              Not logged in
+            </small>
+
+          </div>
+
+        </div>
+
+        <div class="account-dropdown-divider"></div>
+
+        <!-- Logged out -->
+        <div id="loggedOutControls">
+
+          <button
+            type="button"
+            class="account-menu-btn"
+            id="dropdownLogin">
+            🔐 Log In
+          </button>
+
+          <button
+            type="button"
+            class="account-menu-btn"
+            id="dropdownSignup">
+            ✨ Create Account
+          </button>
+
+        </div>
+
+        <!-- Logged in -->
+        <div
+          id="loggedInControls"
+          style="display:none;">
+
+          <button
+            type="button"
+            class="account-menu-btn store-menu-btn"
+            id="myStoreButton">
+            🏪 My Store
+          </button>
+
+          <button
+            type="button"
+            class="account-menu-btn"
+            id="accountDashboardButton">
+            👤 My Account
+          </button>
+
+          <button
+            type="button"
+            class="account-menu-btn logout-btn"
+            id="logoutButton">
+            🚪 Log Out
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <button
+      class="menu-btn"
+      id="menuOpen"
+      aria-label="Open menu"
+      aria-expanded="false"
+      type="button">
+      ☰
+    </button>
+
   </div>
+
 </header>
 
 
-<!-- MOBILE MENU -->
+<!-- =========================
+     MOBILE MENU
+========================= -->
 
-<div class="mobile-menu" id="mobileMenu">
+<div
+  class="mobile-menu"
+  id="mobileMenu"
+  aria-hidden="true">
+
   <div class="mobile-menu-card">
 
     <div class="mobile-menu-head">
+
       <strong>MarketHub</strong>
-      <button id="menuClose">×</button>
+
+      <button
+        id="menuClose"
+        aria-label="Close menu"
+        type="button">
+        ×
+      </button>
+
     </div>
 
     <nav class="mobile-menu-links">
@@ -70,22 +200,29 @@
         👤 Account
       </a>
 
-      <button id="mobileCart">
-        🛒 Cart <b id="mobileCartCount">0</b>
+      <button
+        type="button"
+        id="mobileCart">
+        🛒 Cart
+        <b id="mobileCartCount">0</b>
       </button>
 
-      <button id="mobileAdmin">
+      <button
+        type="button"
+        id="mobileAdmin">
         🛡️ Admin Dashboard
       </button>
 
     </nav>
+
   </div>
+
 </div>
 
 
-<main>
-
-<!-- HERO -->
+<!-- =========================
+     HERO
+========================= -->
 
 <section class="hero" id="home">
 
@@ -106,21 +243,30 @@
       front of buyers around the world.
     </p>
 
-    <form class="search" id="searchForm">
+    <form
+      class="search"
+      id="searchForm">
+
       <span>⌕</span>
 
       <input
         id="searchInput"
+        type="search"
         placeholder="Search products or categories..."
-      >
+        autocomplete="off">
 
-      <button>Search</button>
+      <button type="submit">
+        Search
+      </button>
+
     </form>
 
   </div>
 
 
-  <div class="hero-art">
+  <div
+    class="hero-art"
+    aria-hidden="true">
 
     <div class="glow g1"></div>
     <div class="glow g2"></div>
@@ -156,20 +302,109 @@
 </section>
 
 
-<!-- CATEGORIES -->
+<!-- =========================
+     CATEGORIES
+========================= -->
 
-<section class="categories" id="categories"></section>
-
-
-<!-- PRODUCTS -->
-
-<section class="section" id="explore">
+<section class="section categories-section">
 
   <div class="heading">
 
     <div>
-      <span class="eyebrow">SHOP THE MARKET</span>
-      <h2>Featured Products</h2>
+      <span class="eyebrow">
+        DISCOVER
+      </span>
+
+      <h2>
+        Shop by Category
+      </h2>
+    </div>
+
+  </div>
+
+  <div class="categories">
+
+    <button
+      type="button"
+      class="category"
+      data-category="All">
+      <span>✨</span>
+      <strong>All</strong>
+    </button>
+
+    <button
+      type="button"
+      class="category"
+      data-category="Electronics">
+      <span>💻</span>
+      <strong>Electronics</strong>
+    </button>
+
+    <button
+      type="button"
+      class="category"
+      data-category="Fashion">
+      <span>👟</span>
+      <strong>Fashion</strong>
+    </button>
+
+    <button
+      type="button"
+      class="category"
+      data-category="Home">
+      <span>🏠</span>
+      <strong>Home</strong>
+    </button>
+
+    <button
+      type="button"
+      class="category"
+      data-category="Beauty">
+      <span>✨</span>
+      <strong>Beauty</strong>
+    </button>
+
+    <button
+      type="button"
+      class="category"
+      data-category="Gaming">
+      <span>🎮</span>
+      <strong>Gaming</strong>
+    </button>
+
+    <button
+      type="button"
+      class="category"
+      data-category="Other">
+      <span>📦</span>
+      <strong>Other</strong>
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     PRODUCTS
+========================= -->
+
+<section
+  class="section"
+  id="explore">
+
+  <div class="heading">
+
+    <div>
+
+      <span class="eyebrow">
+        SHOP THE MARKET
+      </span>
+
+      <h2>
+        Featured Products
+      </h2>
+
     </div>
 
     <a href="#explore">
@@ -178,105 +413,216 @@
 
   </div>
 
-  <div class="products" id="products"></div>
+
+  <div
+    class="products"
+    id="products">
+
+    <!-- Products are loaded from Supabase -->
+
+  </div>
 
 </section>
 
 
-<!-- WHY MARKET HUB -->
+<!-- =========================
+     SELL CTA
+========================= -->
 
-<section class="split-section">
+<section
+  class="section sell-section"
+  id="sell">
 
-  <article class="panel">
+  <div class="sell-card">
 
-    <span class="eyebrow">
-      WHY MARKETPLACE?
-    </span>
+    <div>
 
-    <h2>Why MarketHub?</h2>
+      <span class="eyebrow">
+        START SELLING
+      </span>
 
-    <div class="why">
+      <h2>
+        Turn your products<br>
+        into a business.
+      </h2>
 
-      <div>
-        <i>🏪</i>
-        <h3>Your Store</h3>
-        <p>
-          Build your seller presence and display products
-          in one place.
-        </p>
-      </div>
-
-      <div>
-        <i>👥</i>
-        <h3>Reach Buyers</h3>
-        <p>
-          Put your products in front of people searching
-          the marketplace.
-        </p>
-      </div>
-
-      <div>
-        <i>⚡</i>
-        <h3>Simple Selling</h3>
-        <p>
-          Choose a listing plan and manage your products
-          easily.
-        </p>
-      </div>
+      <p>
+        Create an account, choose a seller plan,
+        and start listing your products on MarketHub.
+      </p>
 
     </div>
 
-  </article>
+    <button
+      class="primary"
+      id="sellNow"
+      type="button">
+      Start Selling →
+    </button>
 
-
-  <article class="panel seller-card" id="sell">
-
-    <span class="eyebrow">
-      FOR BUSINESS OWNERS
-    </span>
-
-    <h2>Become a Seller</h2>
-
-    <p>
-      Launch your store, list products and reach new
-      customers.
-    </p>
-
-    <a class="primary" href="#pricing">
-      View Seller Plans →
-    </a>
-
-  </article>
+  </div>
 
 </section>
 
 
-<!-- SELLER PRICING -->
+<!-- =========================
+     SELLER PRICING
+========================= -->
 
-<section class="section" id="pricing">
+<section
+  class="section pricing-section"
+  id="pricing">
 
-  <div class="heading center">
+  <div class="heading">
 
     <div>
+
       <span class="eyebrow">
-        SELLER MEMBERSHIP
+        SELLER PLANS
       </span>
 
-      <h2>Choose Your Plan</h2>
+      <h2>
+        Choose your plan
+      </h2>
 
       <p>
-        Monthly plans for product listings.
+        Select a subscription and start listing products.
       </p>
+
     </div>
 
   </div>
 
-  <div class="plans" id="plans"></div>
+
+  <div class="plans">
+
+    <!-- STARTER -->
+
+    <article class="plan">
+
+      <span class="plan-label">
+        STARTER
+      </span>
+
+      <h3>
+        Starter
+      </h3>
+
+      <div class="price">
+        $5<span>/month</span>
+      </div>
+
+      <p>
+        For sellers getting started.
+      </p>
+
+      <ul>
+
+        <li>✓ 10 product listings</li>
+        <li>✓ Seller account</li>
+        <li>✓ Product dashboard</li>
+        <li>✓ Global buyers</li>
+
+      </ul>
+
+      <button
+        class="primary full plan-button"
+        data-plan="Starter"
+        data-price="5"
+        type="button">
+        Choose Starter
+      </button>
+
+    </article>
+
+
+    <!-- BUSINESS -->
+
+    <article class="plan featured-plan">
+
+      <span class="plan-label">
+        MOST POPULAR
+      </span>
+
+      <h3>
+        Business
+      </h3>
+
+      <div class="price">
+        $15<span>/month</span>
+      </div>
+
+      <p>
+        For growing businesses.
+      </p>
+
+      <ul>
+
+        <li>✓ 50 product listings</li>
+        <li>✓ Seller account</li>
+        <li>✓ Product dashboard</li>
+        <li>✓ Global buyers</li>
+
+      </ul>
+
+      <button
+        class="primary full plan-button"
+        data-plan="Business"
+        data-price="15"
+        type="button">
+        Choose Business
+      </button>
+
+    </article>
+
+
+    <!-- PRO -->
+
+    <article class="plan">
+
+      <span class="plan-label">
+        PROFESSIONAL
+      </span>
+
+      <h3>
+        Pro
+      </h3>
+
+      <div class="price">
+        $30<span>/month</span>
+      </div>
+
+      <p>
+        For established sellers.
+      </p>
+
+      <ul>
+
+        <li>✓ 200 product listings</li>
+        <li>✓ Seller account</li>
+        <li>✓ Product dashboard</li>
+        <li>✓ Global buyers</li>
+
+      </ul>
+
+      <button
+        class="primary full plan-button"
+        data-plan="Pro"
+        data-price="30"
+        type="button">
+        Choose Pro
+      </button>
+
+    </article>
+
+  </div>
 
 </section>
 
 
-<!-- CRYPTO -->
+<!-- =========================
+     CRYPTO
+========================= -->
 
 <section class="crypto">
 
@@ -291,8 +637,8 @@
     </h2>
 
     <p>
-      Pay seller subscriptions with USDT
-      on the TRC20 network.
+      Pay seller subscriptions with USDT on the
+      TRC20 network.
     </p>
 
   </div>
@@ -301,7 +647,11 @@
   <div class="crypto-box">
 
     <div class="qr">
-      QR
+
+      <img
+        src="assets/qr.png"
+        alt="MarketHub USDT TRC20 payment QR code">
+
     </div>
 
     <div>
@@ -314,7 +664,10 @@
         TRzfCcrUmc212VLEYNYVRKtSuYQSnaiU6T
       </code>
 
-      <button class="copy" id="copyAddress">
+      <button
+        class="copy"
+        id="copyAddress"
+        type="button">
         Copy address
       </button>
 
@@ -325,9 +678,13 @@
 </section>
 
 
-<!-- ACCOUNT -->
+<!-- =========================
+     ACCOUNT
+========================= -->
 
-<section class="section account-section" id="account">
+<section
+  class="section account-section"
+  id="account">
 
   <div class="account-card">
 
@@ -335,22 +692,30 @@
       ACCOUNT
     </span>
 
-    <h2>
+    <h2 id="accountSectionTitle">
       Sign in to MarketHub
     </h2>
 
-    <p>
+    <p id="accountSectionText">
       Use your account to buy products or manage
       your seller store.
     </p>
 
-    <div>
+    <div
+      class="account-section-buttons"
+      id="accountSectionButtons">
 
-      <button class="primary" id="login">
+      <button
+        class="primary"
+        id="login"
+        type="button">
         Log In
       </button>
 
-      <button class="secondary" id="signup">
+      <button
+        class="secondary"
+        id="signup"
+        type="button">
         Create Account
       </button>
 
@@ -360,84 +725,314 @@
 
 </section>
 
-</main>
 
+<!-- =========================
+     AUTH MODAL
+========================= -->
 
-<!-- FOOTER -->
+<div
+  class="modal"
+  id="authModal"
+  aria-hidden="true">
 
-<footer>
-
-  <strong>
-    🛍 Market<span>Hub</span>
-  </strong>
-
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#explore">Explore</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#sell">Sell</a>
-    <a href="#account">Account</a>
-  </nav>
-
-  <small>
-    © 2026 MarketHub. All rights reserved.
-  </small>
-
-</footer>
-
-
-<!-- PRODUCT PAGE -->
-
-<div class="modal" id="productModal">
-
-  <div class="modal-card product-detail-card">
+  <div class="modal-card">
 
     <button
       class="close"
-      data-close="productModal"
-      aria-label="Close product page"
-    >
+      data-close="authModal"
+      type="button">
       ×
     </button>
 
-    <div id="productDetail"></div>
+    <span class="eyebrow">
+      MARKETHUB ACCOUNT
+    </span>
+
+    <h2 id="authTitle">
+      Log In
+    </h2>
+
+    <p id="authSubtitle">
+      Log in to your MarketHub account.
+    </p>
+
+
+    <form id="authForm">
+
+      <input
+        id="authEmail"
+        type="email"
+        placeholder="Email address"
+        autocomplete="email"
+        required>
+
+      <input
+        id="authPassword"
+        type="password"
+        placeholder="Password"
+        autocomplete="current-password"
+        required>
+
+      <button
+        class="primary full"
+        type="submit">
+        Continue
+      </button>
+
+    </form>
+
+
+    <p id="authMessage"></p>
+
+
+    <div class="auth-switch">
+
+      <span id="authSwitchText">
+        Don't have an account?
+      </span>
+
+      <button
+        type="button"
+        id="authSwitchButton">
+        Create Account
+      </button>
+
+    </div>
 
   </div>
 
 </div>
 
 
-<!-- CART -->
+<!-- =========================
+     MY STORE MODAL
+========================= -->
 
-<div class="modal" id="cartModal">
+<div
+  class="modal"
+  id="storeModal"
+  aria-hidden="true">
 
-  <div class="modal-card">
+  <div class="modal-card store-modal-card">
 
-    <button class="close" data-close="cartModal">
+    <button
+      class="close"
+      data-close="storeModal"
+      type="button">
       ×
     </button>
 
     <span class="eyebrow">
-      YOUR CART
+      MY STORE
     </span>
 
     <h2>
-      Shopping Cart
+      Seller Store
     </h2>
 
-    <div id="cartItems"></div>
+    <p>
+      Manage your MarketHub products and view your
+      current listing status.
+    </p>
 
-    <div class="total">
 
-      <span>Total</span>
+    <div class="store-owner">
 
-      <b id="cartTotal">
-        $0.00
-      </b>
+      <div class="account-avatar">
+        🏪
+      </div>
+
+      <div>
+
+        <strong id="storeOwnerName">
+          Seller
+        </strong>
+
+        <small id="storeOwnerEmail">
+          —
+        </small>
+
+      </div>
 
     </div>
 
-    <button class="primary full" id="checkout">
+
+    <div class="store-stats">
+
+      <div class="store-stat">
+
+        <strong id="storeTotalProducts">
+          0
+        </strong>
+
+        <span>
+          Products Posted
+        </span>
+
+      </div>
+
+
+      <div class="store-stat">
+
+        <strong id="storeApprovedProducts">
+          0
+        </strong>
+
+        <span>
+          Approved
+        </span>
+
+      </div>
+
+
+      <div class="store-stat">
+
+        <strong id="storePendingProducts">
+          0
+        </strong>
+
+        <span>
+          Pending
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="store-actions">
+
+      <button
+        class="primary full"
+        id="addProductFromStore"
+        type="button">
+        + Add Product
+      </button>
+
+      <button
+        class="secondary full"
+        id="refreshStore"
+        type="button">
+        Refresh Store
+      </button>
+
+    </div>
+
+
+    <p id="storeMessage"></p>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     PRODUCT DETAIL MODAL
+========================= -->
+
+<div
+  class="modal"
+  id="productModal"
+  aria-hidden="true">
+
+  <div class="modal-card product-detail-card">
+
+    <button
+      class="close"
+      data-close="productModal"
+      type="button">
+      ×
+    </button>
+
+    <div id="productDetail">
+
+      <div class="product-detail-image">
+        📦
+      </div>
+
+      <span class="eyebrow">
+        PRODUCT
+      </span>
+
+      <h2 id="detailName">
+        Product
+      </h2>
+
+      <div
+        class="detail-price"
+        id="detailPrice">
+        $0.00
+      </div>
+
+      <p id="detailDescription">
+        Product description.
+      </p>
+
+      <small id="detailStock">
+        Stock available
+      </small>
+
+      <button
+        class="primary full"
+        id="detailAdd"
+        type="button">
+        Add to Cart
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     CART MODAL
+========================= -->
+
+<div
+  class="modal"
+  id="cartModal"
+  aria-hidden="true">
+
+  <div class="modal-card cart-modal-card">
+
+    <button
+      class="close"
+      data-close="cartModal"
+      type="button">
+      ×
+    </button>
+
+    <span class="eyebrow">
+      YOUR SHOPPING CART
+    </span>
+
+    <h2>
+      Cart
+    </h2>
+
+    <div
+      id="cartItems"
+      class="cart-items">
+    </div>
+
+    <div class="cart-total-row">
+
+      <span>
+        Total
+      </span>
+
+      <strong id="cartTotal">
+        $0.00
+      </strong>
+
+    </div>
+
+    <button
+      class="primary full"
+      id="checkoutButton"
+      type="button">
       Proceed to Checkout
     </button>
 
@@ -446,53 +1041,21 @@
 </div>
 
 
-<!-- ADMIN -->
+<!-- =========================
+     PAYMENT MODAL
+========================= -->
 
-<div class="modal" id="adminModal">
-
-  <div class="modal-card admin-modal-card">
-
-    <button class="close" data-close="adminModal">
-      ×
-    </button>
-
-    <span class="eyebrow">
-      MARKETHUB ADMIN
-    </span>
-
-    <h2>
-      Post Approval
-    </h2>
-
-    <p>
-      Review seller posts before they appear publicly
-      on MarketHub.
-    </p>
-
-    <div class="admin-toolbar">
-
-      <button class="secondary" id="refreshPending">
-        Refresh
-      </button>
-
-      <span id="adminStatus"></span>
-
-    </div>
-
-    <div id="pendingPosts" class="pending-posts"></div>
-
-  </div>
-
-</div>
-
-
-<!-- PAYMENT -->
-
-<div class="modal" id="paymentModal">
+<div
+  class="modal"
+  id="paymentModal"
+  aria-hidden="true">
 
   <div class="modal-card">
 
-    <button class="close" data-close="paymentModal">
+    <button
+      class="close"
+      data-close="paymentModal"
+      type="button">
       ×
     </button>
 
@@ -509,6 +1072,28 @@
       then submit the transaction hash.
     </p>
 
+
+    <div class="payment-summary">
+
+      <span>
+        Selected Plan
+      </span>
+
+      <strong id="paymentPlan">
+        —
+      </strong>
+
+      <span>
+        Amount
+      </span>
+
+      <strong id="paymentAmount">
+        $0
+      </strong>
+
+    </div>
+
+
     <div class="crypto-box payment-box">
 
       <div>
@@ -521,7 +1106,10 @@
           TRzfCcrUmc212VLEYNYVRKtSuYQSnaiU6T
         </code>
 
-        <button class="copy" id="paymentCopy">
+        <button
+          class="copy"
+          id="paymentCopy"
+          type="button">
           Copy address
         </button>
 
@@ -529,17 +1117,18 @@
 
     </div>
 
+
     <input
       id="paymentTx"
       type="text"
       placeholder="Transaction hash (TXID)"
-      autocomplete="off"
-    >
+      autocomplete="off">
+
 
     <button
       class="primary full"
       id="submitPayment"
-    >
+      type="button">
       Submit Payment for Review
     </button>
 
@@ -550,58 +1139,174 @@
 </div>
 
 
-<!-- AUTH -->
+<!-- =========================
+     ADMIN MODAL
+========================= -->
 
-<div class="modal" id="authModal">
+<div
+  class="modal"
+  id="adminModal"
+  aria-hidden="true">
 
-  <div class="modal-card">
+  <div class="modal-card admin-modal-card">
 
-    <button class="close" data-close="authModal">
+    <button
+      class="close"
+      data-close="adminModal"
+      type="button">
       ×
     </button>
 
     <span class="eyebrow">
-      MARKETHUB ACCOUNT
+      MARKETHUB ADMIN
     </span>
 
-    <h2 id="authTitle">
-      Log In
+    <h2>
+      Admin Dashboard
     </h2>
 
-    <form id="authForm">
+    <p>
+      Review seller posts before they appear publicly
+      on MarketHub.
+    </p>
 
-      <input
-        id="authEmail"
-        type="email"
-        placeholder="Email address"
-        required
-      >
 
-      <input
-        id="authPassword"
-        type="password"
-        placeholder="Password"
-        required
-      >
+    <div class="admin-tabs">
 
-      <button class="primary full">
-        Continue
+      <button
+        type="button"
+        class="admin-tab active"
+        data-admin-tab="posts">
+        Products
       </button>
 
-    </form>
+      <button
+        type="button"
+        class="admin-tab"
+        data-admin-tab="payments">
+        Payments
+      </button>
 
-    <p id="authMessage"></p>
+    </div>
+
+
+    <!-- POSTS -->
+
+    <div
+      class="admin-panel"
+      id="adminPostsPanel">
+
+      <div class="admin-toolbar">
+
+        <button
+          class="secondary"
+          id="refreshPending"
+          type="button">
+          Refresh
+        </button>
+
+        <span id="adminStatus"></span>
+
+      </div>
+
+      <div
+        id="pendingPosts"
+        class="pending-posts">
+      </div>
+
+    </div>
+
+
+    <!-- PAYMENTS -->
+
+    <div
+      class="admin-panel"
+      id="adminPaymentsPanel"
+      style="display:none;">
+
+      <div class="admin-toolbar">
+
+        <button
+          class="secondary"
+          id="refreshPayments"
+          type="button">
+          Refresh
+        </button>
+
+        <span id="paymentAdminStatus"></span>
+
+      </div>
+
+      <div
+        id="pendingPayments"
+        class="pending-posts">
+      </div>
+
+    </div>
 
   </div>
 
 </div>
 
 
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer class="footer">
+
+  <div class="footer-brand">
+
+    <a href="#home" class="brand">
+      <span class="bag">🛍</span>
+      Market<span>Hub</span>
+    </a>
+
+    <p>
+      Buy. Sell. Grow your business.
+    </p>
+
+  </div>
+
+
+  <div class="footer-links">
+
+    <a href="#home">Home</a>
+
+    <a href="#explore">
+      Products
+    </a>
+
+    <a href="#pricing">
+      Pricing
+    </a>
+
+    <a href="#sell">
+      Sell
+    </a>
+
+    <a href="#account">
+      Account
+    </a>
+
+  </div>
+
+  <div class="footer-copy">
+    © 2026 MarketHub. All rights reserved.
+  </div>
+
+</footer>
+
+
+<!-- =========================
+     SUPABASE
+========================= -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script src="config.js?v=20260911"></script>
+<script src="config.js?v=20260911-1800"></script>
 
-<script src="script.js?v=20260911"></script>
+<script src="script.js?v=20260911-1800"></script>
 
 </body>
 </html>
