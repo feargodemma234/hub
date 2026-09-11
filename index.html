@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MarketHub — Buy, sell and grow your business.">
+  <title>MarketHub — Buy. Sell. Grow.</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="topbar">
+  <a href="#home" class="brand">
+    <span class="bag">🛍</span> Market<span>Hub</span>
+  </a>
+
+  <nav class="nav">
+    <a class="active" href="#home">Home</a>
+    <a href="#explore">Explore</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#sell">Sell</a>
+  </nav>
+
+  <div class="top-actions">
+    <button class="icon-btn" id="searchTop">⌕</button>
+
+    <button class="icon-btn cart-button" id="cartOpen">
+      🛒<b id="cartCount">0</b>
+    </button>
+
+    <button class="account-btn" id="accountOpen">
+      👤 <span>Account</span>⌄
+    </button>
+
+    <button class="menu-btn" id="menuOpen">☰</button>
+  </div>
+</header>
+
+
+<!-- MOBILE MENU -->
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-card">
+
+    <div class="mobile-menu-head">
+      <strong>MarketHub</strong>
+      <button id="menuClose">×</button>
+    </div>
+
+    <nav class="mobile-menu-links">
+
+      <a href="#home" data-menu-link>
+        🏠 Home
+      </a>
+
+      <a href="#explore" data-menu-link>
+        🔎 Explore Products
+      </a>
+
+      <a href="#pricing" data-menu-link>
+        💰 Seller Pricing
+      </a>
+
+      <a href="#sell" data-menu-link>
+        🏪 Sell on MarketHub
+      </a>
+
+      <a href="#account" data-menu-link>
+        👤 Account
+      </a>
+
+      <button id="mobileCart">
+        🛒 Cart <b id="mobileCartCount">0</b>
+      </button>
+
+      <button id="mobileAdmin">
+        🛡️ Admin Dashboard
+      </button>
+
+    </nav>
+  </div>
+</div>
+
+
+<main>
+
+<!-- HERO -->
+
+<section class="hero" id="home">
+
+  <div class="hero-copy">
+
+    <span class="eyebrow">
+      MODERN ONLINE MARKETPLACE
+    </span>
+
+    <h1>
+      Buy. Sell. Grow<br>
+      your <em>business.</em>
+    </h1>
+
+    <p>
+      Discover amazing products from independent sellers,
+      or create your own store and put your products in
+      front of buyers around the world.
+    </p>
+
+    <form class="search" id="searchForm">
+      <span>⌕</span>
+
+      <input
+        id="searchInput"
+        placeholder="Search products or categories..."
+      >
+
+      <button>Search</button>
+    </form>
+
+  </div>
+
+
+  <div class="hero-art">
+
+    <div class="glow g1"></div>
+    <div class="glow g2"></div>
+
+    <span class="item i1">💻</span>
+    <span class="item i2">👟</span>
+    <span class="item i3">🎧</span>
+    <span class="item i4">📱</span>
+    <span class="item i5">⌚</span>
+
+  </div>
+
+
+  <aside class="benefits">
+
+    <div>
+      <strong>🛡️ Secure Payments</strong>
+      <small>Pay safely with crypto</small>
+    </div>
+
+    <div>
+      <strong>⚡ Fast & Reliable</strong>
+      <small>Global marketplace</small>
+    </div>
+
+    <div>
+      <strong>👥 Independent Sellers</strong>
+      <small>Support small businesses</small>
+    </div>
+
+  </aside>
+
+</section>
+
+
+<!-- CATEGORIES -->
+
+<section class="categories" id="categories"></section>
+
+
+<!-- PRODUCTS -->
+
+<section class="section" id="explore">
+
+  <div class="heading">
+
+    <div>
+      <span class="eyebrow">SHOP THE MARKET</span>
+      <h2>Featured Products</h2>
+    </div>
+
+    <a href="#explore">
+      View All →
+    </a>
+
+  </div>
+
+  <div class="products" id="products"></div>
+
+</section>
+
+
+<!-- WHY MARKET HUB -->
+
+<section class="split-section">
+
+  <article class="panel">
+
+    <span class="eyebrow">
+      WHY MARKETPLACE?
+    </span>
+
+    <h2>Why MarketHub?</h2>
+
+    <div class="why">
+
+      <div>
+        <i>🏪</i>
+        <h3>Your Store</h3>
+        <p>
+          Build your seller presence and display products
+          in one place.
+        </p>
+      </div>
+
+      <div>
+        <i>👥</i>
+        <h3>Reach Buyers</h3>
+        <p>
+          Put your products in front of people searching
+          the marketplace.
+        </p>
+      </div>
+
+      <div>
+        <i>⚡</i>
+        <h3>Simple Selling</h3>
+        <p>
+          Choose a listing plan and manage your products
+          easily.
+        </p>
+      </div>
+
+    </div>
+
+  </article>
+
+
+  <article class="panel seller-card" id="sell">
+
+    <span class="eyebrow">
+      FOR BUSINESS OWNERS
+    </span>
+
+    <h2>Become a Seller</h2>
+
+    <p>
+      Launch your store, list products and reach new
+      customers.
+    </p>
+
+    <a class="primary" href="#pricing">
+      View Seller Plans →
+    </a>
+
+  </article>
+
+</section>
+
+
+<!-- SELLER PRICING -->
+
+<section class="section" id="pricing">
+
+  <div class="heading center">
+
+    <div>
+      <span class="eyebrow">
+        SELLER MEMBERSHIP
+      </span>
+
+      <h2>Choose Your Plan</h2>
+
+      <p>
+        Monthly plans for product listings.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="plans" id="plans"></div>
+
+</section>
+
+
+<!-- CRYPTO -->
+
+<section class="crypto">
+
+  <div>
+
+    <span class="eyebrow">
+      SELLER PAYMENTS
+    </span>
+
+    <h2>
+      Global Crypto Payments
+    </h2>
+
+    <p>
+      Pay seller subscriptions with USDT
+      on the TRC20 network.
+    </p>
+
+  </div>
+
+
+  <div class="crypto-box">
+
+    <div class="qr">
+      QR
+    </div>
+
+    <div>
+
+      <strong>
+        USDT · TRC20
+      </strong>
+
+      <code id="cryptoAddress">
+        TRzfCcrUmc212VLEYNYVRKtSuYQSnaiU6T
+      </code>
+
+      <button class="copy" id="copyAddress">
+        Copy address
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ACCOUNT -->
+
+<section class="section account-section" id="account">
+
+  <div class="account-card">
+
+    <span class="eyebrow">
+      ACCOUNT
+    </span>
+
+    <h2>
+      Sign in to MarketHub
+    </h2>
+
+    <p>
+      Use your account to buy products or manage
+      your seller store.
+    </p>
+
+    <div>
+
+      <button class="primary" id="login">
+        Log In
+      </button>
+
+      <button class="secondary" id="signup">
+        Create Account
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+  <strong>
+    🛍 Market<span>Hub</span>
+  </strong>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#explore">Explore</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#sell">Sell</a>
+    <a href="#account">Account</a>
+  </nav>
+
+  <small>
+    © 2026 MarketHub. All rights reserved.
+  </small>
+
+</footer>
+
+
+<!-- PRODUCT PAGE -->
+
+<div class="modal" id="productModal">
+
+  <div class="modal-card product-detail-card">
+
+    <button
+      class="close"
+      data-close="productModal"
+      aria-label="Close product page"
+    >
+      ×
+    </button>
+
+    <div id="productDetail"></div>
+
+  </div>
+
+</div>
+
+
+<!-- CART -->
+
+<div class="modal" id="cartModal">
+
+  <div class="modal-card">
+
+    <button class="close" data-close="cartModal">
+      ×
+    </button>
+
+    <span class="eyebrow">
+      YOUR CART
+    </span>
+
+    <h2>
+      Shopping Cart
+    </h2>
+
+    <div id="cartItems"></div>
+
+    <div class="total">
+
+      <span>Total</span>
+
+      <b id="cartTotal">
+        $0.00
+      </b>
+
+    </div>
+
+    <button class="primary full" id="checkout">
+      Proceed to Checkout
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- ADMIN -->
+
+<div class="modal" id="adminModal">
+
+  <div class="modal-card admin-modal-card">
+
+    <button class="close" data-close="adminModal">
+      ×
+    </button>
+
+    <span class="eyebrow">
+      MARKETHUB ADMIN
+    </span>
+
+    <h2>
+      Post Approval
+    </h2>
+
+    <p>
+      Review seller posts before they appear publicly
+      on MarketHub.
+    </p>
+
+    <div class="admin-toolbar">
+
+      <button class="secondary" id="refreshPending">
+        Refresh
+      </button>
+
+      <span id="adminStatus"></span>
+
+    </div>
+
+    <div id="pendingPosts" class="pending-posts"></div>
+
+  </div>
+
+</div>
+
+
+<!-- PAYMENT -->
+
+<div class="modal" id="paymentModal">
+
+  <div class="modal-card">
+
+    <button class="close" data-close="paymentModal">
+      ×
+    </button>
+
+    <span class="eyebrow">
+      SELLER SUBSCRIPTION
+    </span>
+
+    <h2 id="paymentTitle">
+      Crypto Payment
+    </h2>
+
+    <p id="paymentDescription">
+      Send the exact plan amount in USDT on TRC20,
+      then submit the transaction hash.
+    </p>
+
+    <div class="crypto-box payment-box">
+
+      <div>
+
+        <strong>
+          USDT · TRC20
+        </strong>
+
+        <code id="paymentAddress">
+          TRzfCcrUmc212VLEYNYVRKtSuYQSnaiU6T
+        </code>
+
+        <button class="copy" id="paymentCopy">
+          Copy address
+        </button>
+
+      </div>
+
+    </div>
+
+    <input
+      id="paymentTx"
+      type="text"
+      placeholder="Transaction hash (TXID)"
+      autocomplete="off"
+    >
+
+    <button
+      class="primary full"
+      id="submitPayment"
+    >
+      Submit Payment for Review
+    </button>
+
+    <p id="paymentMessage"></p>
+
+  </div>
+
+</div>
+
+
+<!-- AUTH -->
+
+<div class="modal" id="authModal">
+
+  <div class="modal-card">
+
+    <button class="close" data-close="authModal">
+      ×
+    </button>
+
+    <span class="eyebrow">
+      MARKETHUB ACCOUNT
+    </span>
+
+    <h2 id="authTitle">
+      Log In
+    </h2>
+
+    <form id="authForm">
+
+      <input
+        id="authEmail"
+        type="email"
+        placeholder="Email address"
+        required
+      >
+
+      <input
+        id="authPassword"
+        type="password"
+        placeholder="Password"
+        required
+      >
+
+      <button class="primary full">
+        Continue
+      </button>
+
+    </form>
+
+    <p id="authMessage"></p>
+
+  </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="config.js?v=20260911"></script>
+
+<script src="script.js?v=20260911"></script>
+
+</body>
+</html>
